@@ -6,7 +6,7 @@
     <data>
         <variable
             name="mainViewModel"
-            type="br.com.gusoliveira21.playmusic.activity.mainFragment.MainViewModel" />
+            type="br.com.gusoliveira21.playmusic.viewviewmodel.music.MusicViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

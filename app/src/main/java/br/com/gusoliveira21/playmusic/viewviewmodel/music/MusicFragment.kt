@@ -1,8 +1,11 @@
-package br.com.gusoliveira21.playmusic.activity.mainFragment
+package br.com.gusoliveira21.playmusic.viewviewmodel.music
 
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,29 +19,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.gusoliveira21.playmusic.databinding.MainFragmentBinding
+import br.com.gusoliveira21.playmusic.databinding.MusicFragmentBinding
 import br.com.gusoliveira21.playmusic.model.ModelMusica
+import org.koin.android.viewmodel.ext.android.viewModel
+import java.io.File
 
 
-class MainFragment : Fragment() {
+class MusicFragment : Fragment() {
     //Seekbar
     private var seekProgressMusic: SeekBar? = null
     //View
-    private val binding by lazy { MainFragmentBinding.inflate(LayoutInflater.from(context)) }
-    //private val bindingPlayer by lazy { RecyclerPlayerBinding.inflate(LayoutInflater.from(context)) }
+    private val binding by lazy { MusicFragmentBinding.inflate(LayoutInflater.from(context)) }
     private lateinit var listaMusica: MutableList<ModelMusica>
     private lateinit var BarraMediaPlayer: SeekBar
     //Adapter & RecyclerView
-    private val mainFragmentAdapter = MainFragmentAdapter()
+    private val mainFragmentAdapter = MusicFragmentAdapter()
     lateinit var recyclerView: RecyclerView
     //ViewModel
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MusicViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?,): View? {
         return binding.root
     }
 
@@ -77,7 +77,7 @@ class MainFragment : Fragment() {
     }
 
     private fun configuraViewModel() {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MusicViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
     }
 
@@ -128,13 +128,10 @@ class MainFragment : Fragment() {
         return false
     }
 
-
     private fun configuraAudioManager() {
         seekProgressMusic = binding.seekBarMediaPlayer
-
         seekProgressMusic!!.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                //text_view.text = "Progress : $i"
                 Log.e("teste","$progress")
             }
 

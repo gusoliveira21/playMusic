@@ -1,4 +1,4 @@
-package br.com.gusoliveira21.playmusic.activity.mainFragment
+package br.com.gusoliveira21.playmusic.viewviewmodel.music
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,25 +13,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.gusoliveira21.playmusic.model.ModelMusica
 
-class MainViewModel : ViewModel() {
+class MusicViewModel : ViewModel() {
     var seekProgressMusic: SeekBar? = null
 
-    //MusicPlayer
     private var mediaPlayer: MediaPlayer? = null
 
-    //ListMusic
     private var _mutableListOfModelMusic = mutableListOf<ModelMusica>()
     private var _listaMusica = MutableLiveData<MutableList<ModelMusica>>()
     val listaMusica: LiveData<MutableList<ModelMusica>>
         get() = _listaMusica
 
-    //Context
     var hasContext = false
     val context: LiveData<Context>
         get() = _context
     private var _context = MutableLiveData<Context>()
 
-    //hasMusicOnMediaPlayer
     private var _hasMusic = MutableLiveData<Boolean>()
     val hasMusic: LiveData<Boolean>
         get() = _hasMusic

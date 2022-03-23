@@ -8,20 +8,20 @@
     <data>
         <variable
             name="mainViewModel"
-            type="br.com.gusoliveira21.playmusic.activity.mainFragment.MainViewModel" />
+            type="br.com.gusoliveira21.playmusic.viewviewmodel.music.MusicViewModel" />
     </data>
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.mainFragment.MainFragment">
+        tools:context=".viewviewmodel.music.MusicFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/custom"
-            tools:context=".activity.MainActivity">
+            tools:context=".viewviewmodel.MainActivity">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/idRecyclearViewMusica"
@@ -34,7 +34,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/recycler_musica" />
+                tools:listitem="@layout/item_musica" />
 
             <LinearLayout
                 android:id="@+id/id_linearlayout_player"
@@ -110,11 +110,5 @@
 
 
     </FrameLayout>
-
-
-
-
-
-
 
 </layout>
