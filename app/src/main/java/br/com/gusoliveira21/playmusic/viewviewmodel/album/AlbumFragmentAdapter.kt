@@ -1,25 +1,47 @@
 package br.com.gusoliveira21.playmusic.viewviewmodel.album
 
+import android.R
+import android.graphics.drawable.Drawable
+import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import br.com.gusoliveira21.playmusic.databinding.ItemMusicaBinding
+import br.com.gusoliveira21.playmusic.databinding.ItemAlbumBinding
+import br.com.gusoliveira21.playmusic.model.ModelAlbum
 
-class AlbumFragmentAdapter:RecyclerView.Adapter<AlbumFragmentAdapter.ViewHolderAlbum>() {
 
+class AlbumFragmentAdapter : RecyclerView.Adapter<AlbumFragmentAdapter.ViewHolderAlbum>() {
 
+    var listAlbum: MutableList<ModelAlbum> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderAlbum {
-        TODO("Not yet implemented")
+        val bindingRecyclerView = ItemAlbumBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false)
+        return ViewHolderAlbum(bindingRecyclerView)
     }
 
     override fun onBindViewHolder(holder: ViewHolderAlbum, position: Int) {
-        TODO("Not yet implemented")
+        holder.putImagem(listAlbum[position])
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount() = listAlbum!!.size
 
-    class ViewHolderAlbum(itemView: ItemMusicaBinding):RecyclerView.ViewHolder(itemView.root) {
+    class ViewHolderAlbum(itemView: ItemAlbumBinding) : RecyclerView.ViewHolder(itemView.root) {
+        private val viewImagem = itemView.imgAlbum
+        private val txtNomeAlbum = itemView.idNomeAlbum
 
+
+        fun putImagem(modelAlbum: ModelAlbum) {
+            //val coverPath: String = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART))
+            val img = Drawable.createFromPath(modelAlbum.albumImagem)
+            //val coverAlbum: ImageView = //view.findViewById(R.id.album_cover) as ImageView
+            viewImagem.setImageDrawable(img)
+            /*Glide.with(itemView.rootView.context)
+                 .load(modelAlbum.albumImagem)
+                 .apply(RequestOptions.bitmapTransform(CropSquareTransformation()))
+                 .into(viewImagem)*/
+        }
     }
 }

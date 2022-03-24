@@ -1,11 +1,8 @@
 package br.com.gusoliveira21.playmusic.viewviewmodel.music
 
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.gusoliveira21.playmusic.databinding.MusicFragmentBinding
 import br.com.gusoliveira21.playmusic.model.ModelMusica
-import org.koin.android.viewmodel.ext.android.viewModel
-import java.io.File
 
 
 class MusicFragment : Fragment() {
@@ -33,7 +28,7 @@ class MusicFragment : Fragment() {
     private lateinit var listaMusica: MutableList<ModelMusica>
     private lateinit var BarraMediaPlayer: SeekBar
     //Adapter & RecyclerView
-    private val mainFragmentAdapter = MusicFragmentAdapter()
+    private val adapter = MusicFragmentAdapter()
     lateinit var recyclerView: RecyclerView
     //ViewModel
     private lateinit var viewModel: MusicViewModel
@@ -102,12 +97,12 @@ class MusicFragment : Fragment() {
     }
 
     private fun adapter(list: MutableList<ModelMusica>) {
-        mainFragmentAdapter.listMusica = list
-        mainFragmentAdapter.context = context
-        mainFragmentAdapter.viewModel = viewModel
+        adapter.listMusica = list
+        adapter.context = context
+        adapter.viewModel = viewModel
         viewModel.seekProgressMusic = binding.seekBarMediaPlayer
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = mainFragmentAdapter
+        recyclerView.adapter = adapter
     }
 
     private fun checarPermissao(): Boolean {

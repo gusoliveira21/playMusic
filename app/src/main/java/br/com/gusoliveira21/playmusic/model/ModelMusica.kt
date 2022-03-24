@@ -1,6 +1,12 @@
 package br.com.gusoliveira21.playmusic.model
 
 
-data class ModelMusica (val nomeMusica: String, var nomeArtista: String, var uri: String){
+data class ModelMusica (
+    var uri: String,
+    val nomeMusica: String,
+    var nomeArtista: String,
+    var nomeAlbum: String,
+    var duration: String
+){
 
 }

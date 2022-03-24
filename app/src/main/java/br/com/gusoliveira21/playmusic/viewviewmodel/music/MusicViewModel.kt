@@ -51,6 +51,7 @@ class MusicViewModel : ViewModel() {
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.ALBUM
         )
         val selection = MediaStore.Audio.Media.IS_MUSIC + "!=0"
         val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
@@ -62,11 +63,12 @@ class MusicViewModel : ViewModel() {
             sortOrder
         )?.use { cursor ->
             while (cursor.moveToNext()) {
-
                 _mutableListOfModelMusic.add(
                     ModelMusica(
                         nomeMusica = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),
                         nomeArtista = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                        nomeAlbum = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                        duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),
                         uri = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
                     )
                 )
