@@ -52,7 +52,7 @@
                     android:textSize="@dimen/size_texto_padrao" />
 
                 <TextView
-                    android:id="@+id/idAdpNomeArtista"
+                    android:id="@+id/idNomeArtista"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_padding"

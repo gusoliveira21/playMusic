@@ -40,9 +40,24 @@ class MusicViewModel : ViewModel() {
         if (hasContext == false) {
             hasContext = true
             _context.value = context
-            carregarMusica()
+            //carregarMusica()
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @SuppressLint("Range")
@@ -76,6 +91,27 @@ class MusicViewModel : ViewModel() {
         }
         _listaMusica.value = _mutableListOfModelMusic
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     fun playMusic(uri: Uri) {
         if (mediaPlayer == null) {

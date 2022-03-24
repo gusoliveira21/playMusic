@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.gusoliveira21.playmusic.model.ModelAlbum
 import br.com.gusoliveira21.playmusic.model.ModelMusica
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -36,60 +37,68 @@ class AlbumViewModel : ViewModel() {
         }
     }
 
-    @SuppressLint("Range")
+    //TODO: corrigir o coroutine colocando o await
     fun getAlbumsLists() {
         viewModelScope.launch {
             coroutineScope {
-                val uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
-                val albumId = MediaStore.Audio.Albums._ID
-                val albumName = MediaStore.Audio.AlbumColumns.ALBUM
-                val albumTracks = MediaStore.Audio.Albums.NUMBER_OF_SONGS
-                val albumImagem = MediaStore.Audio.Albums.ALBUM_ART
-                val albumArtista = MediaStore.Audio.AlbumColumns.ARTIST
-                val albumArtstkey = MediaStore.Audio.Artists.ARTIST_KEY
-                val columns =
-                    arrayOf(albumId,
-                        albumName,
-                        albumArtista,
-                        albumTracks,
-                        albumImagem,
-                        albumArtstkey)
-                val cursor: Cursor? = context.value?.contentResolver?.query(
-                    uri,
-                    columns,
-                    null,
-                    null,
-                    null)
-                if (cursor != null) {
-                    for (s in cursor.getColumnNames()) {
-                        Log.d("COLUMNS", "Column = $s")
-                    }
+                try {
+                    _listaAlbum.value = async {getAlbumList()}.await()
+                } catch (e: Exception) {
+
                 }
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        _mutableListOfModelAlbum.add(
-                            ModelAlbum(
-                                albumArtista = "${
-                                    cursor.getString(cursor.getColumnIndex(albumArtista))
-                                }",
-                                albumName = "${cursor.getString(cursor.getColumnIndex(albumName))}",
-                                albumImagem = "${cursor.getString(cursor.getColumnIndex(albumImagem))}",
-                                albumId = "${cursor.getString(cursor.getColumnIndex(albumId))}",
-                                albumTracks = "${cursor.getString(cursor.getColumnIndex(albumTracks))}",
-                                albumArtstkey = "${
-                                    cursor.getString(cursor.getColumnIndex(albumArtstkey))
-                                }"
-                            )
-                        )
-                    }
-                }
-                _listaAlbum.value = _mutableListOfModelAlbum
-                cursor?.close()
+
             }
+
         }
     }
 
 
+@SuppressLint("Range")
+fun getAlbumList(): MutableList<ModelAlbum> {
+    val uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+    val albumId = MediaStore.Audio.Albums._ID
+    val albumName = MediaStore.Audio.AlbumColumns.ALBUM
+    val albumTracks = MediaStore.Audio.Albums.NUMBER_OF_SONGS
+    val albumImagem = MediaStore.Audio.Albums.ALBUM_ART
+    val albumArtista = MediaStore.Audio.AlbumColumns.ARTIST
+    val albumArtstkey = MediaStore.Audio.Artists.ARTIST_KEY
+    val columns =
+        arrayOf(albumId,
+            albumName,
+            albumArtista,
+            albumTracks,
+            albumImagem,
+            albumArtstkey)
+    val cursor: Cursor? = context.value?.contentResolver?.query(
+        uri,
+        columns,
+        null,
+        null,
+        null)
+
+    if (cursor != null) {
+        for (s in cursor.getColumnNames()) {
+            Log.d("COLUMNS", "Column = $s")
+        }
+    }
+
+    if (cursor != null) {
+        while (cursor.moveToNext()) {
+            _mutableListOfModelAlbum.add(
+                ModelAlbum(
+                    albumArtista = "${cursor.getString(cursor.getColumnIndex(albumArtista))}",
+                    albumName = "${cursor.getString(cursor.getColumnIndex(albumName))}",
+                    albumImagem = "${cursor.getString(cursor.getColumnIndex(albumImagem))}",
+                    albumId = "${cursor.getString(cursor.getColumnIndex(albumId))}",
+                    albumTracks = "${cursor.getString(cursor.getColumnIndex(albumTracks))}",
+                    albumArtstkey = "${cursor.getString(cursor.getColumnIndex(albumArtstkey))}"
+                )
+            )
+        }
+    }
+    cursor?.close()
+    return _mutableListOfModelAlbum
+}
 }
 
 

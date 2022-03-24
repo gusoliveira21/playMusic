@@ -24,13 +24,20 @@ class AlbumFragmentAdapter : RecyclerView.Adapter<AlbumFragmentAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolderAlbum, position: Int) {
         holder.putImagem(listAlbum[position])
+        holder.putNomeAlbum(listAlbum[position].albumName)
+        holder.putNomeArtista(listAlbum[position].albumArtista)
+
     }
 
     override fun getItemCount() = listAlbum!!.size
 
     class ViewHolderAlbum(itemView: ItemAlbumBinding) : RecyclerView.ViewHolder(itemView.root) {
-        private val viewImagem = itemView.imgAlbum
-        private val txtNomeAlbum = itemView.idNomeAlbum
+        val viewImagem = itemView.imgAlbum
+        val txtNomeAlbum = itemView.idNomeAlbum
+        val txtNomeArtista = itemView.idNomeArtista
+
+        fun putNomeAlbum(nomeAlbum:String) = (nomeAlbum.also { txtNomeAlbum.text = it })
+        fun putNomeArtista(nomeArtista:String) = (nomeArtista.also { txtNomeArtista.text = it })
 
 
         fun putImagem(modelAlbum: ModelAlbum) {
