@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.gusoliveira21.playmusic.databinding.AlbumFragmentBinding
 import br.com.gusoliveira21.playmusic.model.ModelAlbum
 
-
 class AlbumFragment : Fragment() {
     private val binding by lazy {AlbumFragmentBinding.inflate(LayoutInflater.from(context))}
     private lateinit var viewModel: AlbumViewModel
@@ -45,19 +44,16 @@ class AlbumFragment : Fragment() {
 
     private fun configAdapter(listAlbum: MutableList<ModelAlbum>) {
         adapter.listAlbum = listAlbum
+        adapter.context = context
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
 
     private fun checarPermissao(): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
-            if ((ActivityCompat.checkSelfPermission(requireContext(),
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED
-            ) {
+            if ((ActivityCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 123)
-                if ((ActivityCompat.checkSelfPermission(requireContext(),
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED
-                ) {
+                if ((ActivityCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED) {
                     return checarPermissao()
                 }
             } else {
@@ -67,7 +63,9 @@ class AlbumFragment : Fragment() {
         return false
     }
 
-
-
-
 }
+
+
+
+
+

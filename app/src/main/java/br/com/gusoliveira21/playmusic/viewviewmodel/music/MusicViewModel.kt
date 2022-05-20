@@ -2,8 +2,10 @@ package br.com.gusoliveira21.playmusic.viewviewmodel.music
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.database.Cursor
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
@@ -40,77 +42,63 @@ class MusicViewModel : ViewModel() {
         if (hasContext == false) {
             hasContext = true
             _context.value = context
-            //carregarMusica()
+            carregarMusica()
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @SuppressLint("Range")
     fun carregarMusica() {
+        //MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val uri =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+            else
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+
         val projection = arrayOf(
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DATA,
-            MediaStore.Audio.Media.ALBUM
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.DURATION
         )
         val selection = MediaStore.Audio.Media.IS_MUSIC + "!=0"
         val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
-        context.value?.contentResolver?.query(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+
+        val cursor: Cursor? = context.value?.contentResolver?.query(
+            uri,
             projection,
             selection,
             null,
             sortOrder
-        )?.use { cursor ->
+
+        )
+
+        if (cursor != null) {
             while (cursor.moveToNext()) {
+                Log.e("teste","->> ${MediaStore.Audio.Albums.getContentUri(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)))}")
+
+                //var nomeMusica = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
+                //var nomeArtista = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
+                //var nomeAlbum = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM))
+                var duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
+                //var uri = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
+                //Log.e("teste","${}")
                 _mutableListOfModelMusic.add(
                     ModelMusica(
                         nomeMusica = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),
                         nomeArtista = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
                         nomeAlbum = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
-                        duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),
+                        //duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)),
                         uri = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
                     )
                 )
             }
         }
         _listaMusica.value = _mutableListOfModelMusic
+        cursor?.close()
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     fun playMusic(uri: Uri) {
@@ -149,9 +137,9 @@ class MusicViewModel : ViewModel() {
     }
 
     fun configSeekBar() {
-        seekProgressMusic?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        seekProgressMusic?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(fromUser) mediaPlayer!!.seekTo(progress)
+                if (fromUser) mediaPlayer!!.seekTo(progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -160,16 +148,16 @@ class MusicViewModel : ViewModel() {
         })
     }
 
-    fun initSeekBar(){
+    fun initSeekBar() {
         configSeekBar()
         seekProgressMusic?.max = mediaPlayer!!.duration
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
-                try{
+                try {
                     seekProgressMusic?.progress = mediaPlayer!!.currentPosition
                     handler.postDelayed(this, 1000)
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     seekProgressMusic?.progress = 0
                 }
             }
@@ -181,7 +169,7 @@ class MusicViewModel : ViewModel() {
             mediaPlayer!!.stop()
             mediaPlayer?.release()
             mediaPlayer = null
-            Log.e("teste","app Destruido")
+            Log.e("teste", "app Destruido")
         }
     }
 

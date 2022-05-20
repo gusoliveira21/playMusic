@@ -107,13 +107,9 @@ class MusicFragment : Fragment() {
 
     private fun checarPermissao(): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
-            if ((ActivityCompat.checkSelfPermission(requireContext(),
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED
-            ) {
+            if ((ActivityCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 123)
-                if ((ActivityCompat.checkSelfPermission(requireContext(),
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED
-                ) {
+                if ((ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE)) != PackageManager.PERMISSION_GRANTED) {
                     return checarPermissao()
                 }
             } else {

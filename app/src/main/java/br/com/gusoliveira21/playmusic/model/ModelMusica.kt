@@ -6,7 +6,7 @@ data class ModelMusica (
     val nomeMusica: String,
     var nomeArtista: String,
     var nomeAlbum: String,
-    var duration: String
+    //var duration: Long
 ){
 
 }
