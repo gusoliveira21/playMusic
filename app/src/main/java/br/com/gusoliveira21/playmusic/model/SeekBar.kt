@@ -1,4 +1,4 @@
-
+//Nota: Modificar para que seja possível reduzir o código
 package br.com.gusoliveira21.playmusic.model
 /*
 import android.media.MediaPlayer

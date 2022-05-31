@@ -4,10 +4,10 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.widget.ImageView
-import br.com.gusoliveira21.playmusic.viewviewmodel.music.MusicViewModel
-
+import br.com.gusoliveira21.playmusic.viewviewmodel.favorite.FavoriteViewModel
+//Nota: Criar uma classe PlayMusic, que eu possa usar em outras classes para substituir repetição de código
 class PlayMusic(val context: Context, mediaPlayer: MediaPlayer?) {
-    private var viewModel = MusicViewModel()
+    private var viewModel = FavoriteViewModel()
     private var mediaPlayer = mediaPlayer
     //var mediaPlayer: MediaPlayer? = null
     var imgPlay: ImageView? = null

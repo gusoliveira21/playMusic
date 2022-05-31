@@ -3,16 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/albuns_fragment">
+    <fragment
+        android:id="@+id/albuns_fragment"
+        android:name="br.com.gusoliveira21.playmusic.viewviewmodel.album.AlbumFragment"
+        android:label="fragment_albuns"
+        tools:layout="@layout/album_fragment" >
+        <action
+            android:id="@+id/action_albuns_fragment_to_musicFragment"
+            app:destination="@id/musicFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="br.com.gusoliveira21.playmusic.viewviewmodel.music.MusicFragment"
-        android:label="main_fragment"
-        tools:layout="@layout/music_fragment" />
+        android:id="@+id/favorite_fragment"
+        android:name="br.com.gusoliveira21.playmusic.viewviewmodel.favorite.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/favorite_fragment" />
     <fragment
-        android:id="@+id/albumFragment"
-        android:name="br.com.gusoliveira21.playmusic.viewviewmodel.album.AlbumFragment"
-        android:label="album_fragment"
-        tools:layout="@layout/album_fragment" />
+        android:id="@+id/musicFragment"
+        android:name="br.com.gusoliveira21.playmusic.viewviewmodel.music.MusicFragment"
+        android:label="MusicFragment"
+        tools:layout="@layout/music_fragment">
+        <action
+            android:id="@+id/action_musicFragment_to_albuns_fragment"
+            app:destination="@id/albuns_fragment" />
+        <argument
+            android:name="albumName"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

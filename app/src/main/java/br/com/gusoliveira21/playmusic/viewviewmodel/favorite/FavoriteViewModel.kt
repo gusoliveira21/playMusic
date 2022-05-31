@@ -1,7 +1,6 @@
-package br.com.gusoliveira21.playmusic.viewviewmodel.music
+package br.com.gusoliveira21.playmusic.viewviewmodel.favorite
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.media.MediaPlayer
@@ -11,45 +10,29 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.SeekBar
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-//import br.com.gusoliveira21.playmusic.database.FavoriteMusicDao
+import androidx.lifecycle.ViewModel
 import br.com.gusoliveira21.playmusic.model.ModelMusic
 
-class MusicViewModel(
-    //val musicDao: FavoriteMusicDao,
-    application:Application,
-    private val albumChosen: String) : AndroidViewModel(application) {
-
-
+class FavoriteViewModel : ViewModel() {
     var seekProgressMusic: SeekBar? = null
+
     private var mediaPlayer: MediaPlayer? = null
 
     private var _mutableListOfModelMusic = mutableListOf<ModelMusic>()
-
-    private var _listMusic = MutableLiveData<MutableList<ModelMusic>>()
-    val listMusic: LiveData<MutableList<ModelMusic>>
-        get() = _listMusic
+    private var _listAlbuns = MutableLiveData<MutableList<ModelMusic>>()
+    val listAlbuns: LiveData<MutableList<ModelMusic>>
+        get() = _listAlbuns
 
     var hasContext = false
-    private var _context = MutableLiveData<Context>()
     val context: LiveData<Context>
         get() = _context
+    private var _context = MutableLiveData<Context>()
 
     private var _hasMusic = MutableLiveData<Boolean>()
     val hasMusic: LiveData<Boolean>
         get() = _hasMusic
-
-    private var _favorite = MutableLiveData<Boolean>()
-    val favorite: LiveData<Boolean>
-        get() = _favorite
-
-    fun favoriteHasClicked(musicFavorite: ModelMusic) {
-        //a musica clicada é uma favorita?
-        //sim -> realiza ação para descurtir musica
-        //não -> realizaação para curtir musica
-    }
 
     init {
         _hasMusic.value = false
@@ -73,18 +56,12 @@ class MusicViewModel(
             else
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
-        val nameMusic = MediaStore.Audio.Media.DISPLAY_NAME
-        val artistMusic = MediaStore.Audio.Media.ARTIST
-        val dataMusic = MediaStore.Audio.Media.DATA
-        val nameAlbum = MediaStore.Audio.Media.ALBUM
-        val durationMusic = MediaStore.Audio.Media.DURATION //Todo: Preciso colocar a duração da musica na view
-
         val projection = arrayOf(
-            nameMusic,
-            artistMusic,
-            dataMusic,
-            nameAlbum,
-            durationMusic
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.DURATION
         )
         val selection = MediaStore.Audio.Media.IS_MUSIC + "!=0"
         val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
@@ -95,28 +72,25 @@ class MusicViewModel(
             selection,
             null,
             sortOrder
+
         )
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                if(cursor.getString(cursor.getColumnIndex(nameAlbum)) == albumChosen) {
-                    _mutableListOfModelMusic.add(
-                        ModelMusic(
-                            nameMusic = cursor.getString(cursor.getColumnIndex(nameMusic)),
-                            nameArtist = cursor.getString(cursor.getColumnIndex(artistMusic)),
-                            nameAlbum = cursor.getString(cursor.getColumnIndex(nameAlbum)),
-                            duration = cursor.getString(cursor.getColumnIndex(durationMusic))
-                                .toLong(),
-                            uri = cursor.getString(cursor.getColumnIndex(dataMusic))
-                        )
+                _mutableListOfModelMusic.add(
+                    ModelMusic(
+                        nameMusic = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),
+                        nameArtist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                        nameAlbum = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                        duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)).toLong(),
+                        uri = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
                     )
-                }
+                )
             }
         }
-        _listMusic.value = _mutableListOfModelMusic
+        _listAlbuns.value = _mutableListOfModelMusic
         cursor?.close()
     }
-
 
     fun playMusic(uri: Uri) {
         if (mediaPlayer == null) {

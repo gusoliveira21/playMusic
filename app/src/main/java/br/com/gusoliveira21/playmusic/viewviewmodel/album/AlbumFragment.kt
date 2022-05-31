@@ -18,26 +18,27 @@ class AlbumFragment : Fragment() {
     private val binding by lazy {AlbumFragmentBinding.inflate(LayoutInflater.from(context))}
     private lateinit var viewModel: AlbumViewModel
     private var adapter = AlbumFragmentAdapter()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,): View? {
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AlbumViewModel::class.java)
-        binding.lifecycleOwner = viewLifecycleOwner
 
+        configViewModel()
         if (checarPermissao()) {
             observer()
             viewModel.initContext(requireContext())
         }
     }
 
+    private fun configViewModel() {
+        viewModel = ViewModelProvider(this).get(AlbumViewModel::class.java)
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
     private fun observer() {
-        viewModel.listaAlbum.observe(viewLifecycleOwner, Observer { listAlbum ->
+        viewModel.listAlbum.observe(viewLifecycleOwner, Observer { listAlbum ->
             configAdapter(listAlbum)
         })
     }

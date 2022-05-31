@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/albuns"
-        android:title="Albuns"
+        android:id="@+id/albuns_fragment"
         android:icon="@drawable/ic_album_foreground"
+        android:title="Albuns"
         />
 
     <item
-        android:id="@+id/favorite"
+        android:id="@+id/favorite_fragment"
+        android:icon="@drawable/ic_be_favorite_foreground"
         android:title="favoritos"
-        android:icon="@drawable/ic_favorite_foreground"
         />
 </menu>
