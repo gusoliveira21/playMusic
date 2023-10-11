@@ -1,3 +1,4 @@
+/*
 package br.com.gusoliveira21.playmusic.database
 
 import android.content.Context
@@ -26,4 +27,4 @@ abstract class FavoriteMusicDataBase: RoomDatabase() {
             return INSTANCE as FavoriteMusicDataBase
         }
     }
-}
+}*/

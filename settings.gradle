@@ -1,2 +1,4 @@
 include ':app'
 rootProject.name = "PlayMusic"
+include ':data'
+include ':domain'
