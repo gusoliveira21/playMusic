@@ -1,3 +1,4 @@
+/*
 package br.com.gusoliveira21.playmusic.database
 
 
@@ -23,4 +24,4 @@ interface FavoriteMusicDao {
 
     //@Delete
     //suspend fun delFavoriteMusic(favMusicId: FavoriteMusicEntity)
-}
+}*/

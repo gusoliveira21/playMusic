@@ -1,3 +1,4 @@
+/*
 package br.com.gusoliveira21.playmusic.database
 
 import androidx.room.TypeConverter
@@ -26,4 +27,4 @@ class MusicTypeConverter {
             json.get("nameDuration").toString().toLong()
         )
     }
-}
+}*/
